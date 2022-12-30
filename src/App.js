@@ -1,5 +1,5 @@
 import './App.css';
-import MyApp from './MyApp.js'
+import MyApp from './MyApp.jsx'
 
 function App() {
   return (
