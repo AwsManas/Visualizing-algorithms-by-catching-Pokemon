@@ -9,8 +9,11 @@ export default class SingleNode extends Component{
     }
 
     render(){
+
+        const {isStart, isEnd , isVisited} = this.props;
+        let extraClass = isStart ? 'node-start' : isEnd ? 'node-end' : isVisited ? 'node-visited' : ''
         return (
-            <div className="node">
+            <div className={`node ${extraClass}`}>
             </div>
         )
     }

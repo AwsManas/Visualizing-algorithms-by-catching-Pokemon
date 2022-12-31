@@ -2,6 +2,9 @@ import React , {Component} from "react";
 
 import Node from './SingleNode.js'
 import './css/MyApp.css'
+import * as Constants from './constants'
+
+import {depth_first_search} from './algorithms/dfs'
 
 export default class MyApp extends Component{
 
@@ -14,14 +17,48 @@ export default class MyApp extends Component{
 
     componentDidMount() {
         let nodes = []
-        for(let row = 0; row < 30; row++){
-            let crow = []
-            for(let col = 0; col < 60; col++) {
-                crow.push([]);
+        for(let row = 0; row < Constants.grid_height; row++){
+            let crow = []; 
+            for(let col = 0; col < Constants.grid_width; col++) {
+                
+                let thisNode = {
+                    row : row,
+                    col : col,
+                    start : row === Constants.start_row && col === Constants.start_col , 
+                    finish : row === Constants.end_row && col === Constants.end_col,
+                    visit : false
+                };
+
+                crow.push(thisNode);
+
             } 
             nodes.push(crow);
         }
         this.setState({nodes});
+    }
+
+    animate_dfs(visited_nodes){
+        let  delay = 10;
+        for(const node of visited_nodes){
+            setTimeout(()=> {
+            const newNodes = this.state.nodes.slice();
+            const newNode = {
+                ...node,
+                visit : true
+            }
+            newNodes[node.row][node.col] = newNode;
+            this.setState({nodes: newNodes});
+            delay +=10;
+            },10+delay);
+        }
+    }
+
+    visualize_dfs() {
+    const {nodes} = this.state;
+    const startNode = nodes[Constants.start_row][Constants.start_col];
+    const finishNode = nodes[Constants.end_row][Constants.end_col];
+    const visitedNodesInOrder = depth_first_search(nodes, startNode, finishNode);
+    this.animate_dfs(visitedNodesInOrder);
     }
 
     render(){
@@ -29,18 +66,27 @@ export default class MyApp extends Component{
         let nodes = this.state.nodes;
         
         return (
+            <div>
+            <button onClick={ () => this.visualize_dfs()}>DFS</button>
             <div className="mygrid">
             {nodes.map((row, rowIdx) => {
               return (
                 <div key={rowIdx}>
                   {row.map((node, nodeIdx) => {
+                    const {start,finish,visit} = node;
                     return (
-                      <Node></Node>
+                      <Node 
+                        key = {nodeIdx}
+                        isStart = {start} 
+                        isEnd = {finish}
+                        isVisited = {visit}>
+                      </Node>
                     );
                   })}
                 </div>
               );
             })}
+          </div>
           </div>
         )
     }
