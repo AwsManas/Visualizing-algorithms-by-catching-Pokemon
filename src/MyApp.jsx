@@ -16,30 +16,14 @@ export default class MyApp extends Component{
     }
 
     componentDidMount() {
-        let nodes = []
-        for(let row = 0; row < Constants.grid_height; row++){
-            let crow = []; 
-            for(let col = 0; col < Constants.grid_width; col++) {
-                
-                let thisNode = {
-                    row : row,
-                    col : col,
-                    start : row === Constants.start_row && col === Constants.start_col , 
-                    finish : row === Constants.end_row && col === Constants.end_col,
-                    visit : false
-                };
-
-                crow.push(thisNode);
-
-            } 
-            nodes.push(crow);
-        }
+        const nodes = initialNodes();
         this.setState({nodes});
     }
 
     animate_dfs(visited_nodes){
-        let  delay = 10;
+        let  delay = 20;
         for(const node of visited_nodes){
+            delay +=50;
             setTimeout(()=> {
             const newNodes = this.state.nodes.slice();
             const newNode = {
@@ -48,7 +32,6 @@ export default class MyApp extends Component{
             }
             newNodes[node.row][node.col] = newNode;
             this.setState({nodes: newNodes});
-            delay +=10;
             },10+delay);
         }
     }
@@ -61,10 +44,27 @@ export default class MyApp extends Component{
     this.animate_dfs(visitedNodesInOrder);
     }
 
+
+
+    handleMouseDown(row,col){
+        const newNodes = getNewNodesWithWallToggle(this.state.nodes,row,col)
+        this.setState({nodes : newNodes , mousePressed : true});
+    }
+
+    handleMouseUp(){
+        this.setState({mousePressed : false});
+    }
+
+    handleMouseEnter(row,col){
+        if(this.state.mousePressed===false)
+        return;
+        const newNodes = getNewNodesWithWallToggle(this.state.nodes,row,col)
+        this.setState({nodes : newNodes});
+    }
+
     render(){
 
         let nodes = this.state.nodes;
-        
         return (
             <div>
             <button onClick={ () => this.visualize_dfs()}>DFS</button>
@@ -73,13 +73,20 @@ export default class MyApp extends Component{
               return (
                 <div key={rowIdx}>
                   {row.map((node, nodeIdx) => {
-                    const {start,finish,visit} = node;
+                    const {start,finish,visit,isWall,row,col} = node;
                     return (
                       <Node 
                         key = {nodeIdx}
                         isStart = {start} 
                         isEnd = {finish}
-                        isVisited = {visit}>
+                        isVisited = {visit}
+                        isWall = {isWall}
+                        onMouseDown={(row, col) => this.handleMouseDown(row, col)}
+                        onMouseEnter={(row, col) => this.handleMouseEnter(row, col)}
+                        onMouseUp={() => this.handleMouseUp()}
+                        row = {row}
+                        col = {col}
+                        >
                       </Node>
                     );
                   })}
@@ -92,3 +99,37 @@ export default class MyApp extends Component{
     }
 
 }
+
+const getNewNodesWithWallToggle = (nodes,row,col) => {
+    const newNodes = nodes.slice();
+    const node = newNodes[row][col];
+    const newNode = {
+        ...node,
+        isWall : !node.isWall
+    }
+    newNodes[row][col] = newNode;
+    return newNodes;
+};
+
+const initialNodes = () => {
+    let nodes = []
+    for(let row = 0; row < Constants.grid_height; row++){
+        let crow = []; 
+        for(let col = 0; col < Constants.grid_width; col++) {
+            
+            let thisNode = {
+                row : row,
+                col : col,
+                start : row === Constants.start_row && col === Constants.start_col , 
+                finish : row === Constants.end_row && col === Constants.end_col,
+                visit : false,
+                isWall : false
+            };
+
+            crow.push(thisNode);
+
+        } 
+        nodes.push(crow);
+    }
+    return nodes;
+};

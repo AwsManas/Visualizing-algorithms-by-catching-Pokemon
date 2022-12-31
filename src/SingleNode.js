@@ -10,10 +10,15 @@ export default class SingleNode extends Component{
 
     render(){
 
-        const {isStart, isEnd , isVisited} = this.props;
-        let extraClass = isStart ? 'node-start' : isEnd ? 'node-end' : isVisited ? 'node-visited' : ''
+        const {isStart, isEnd , isVisited, row, col , onMouseDown , onMouseEnter , onMouseUp, isWall, } = this.props;
+        let extraClass = isVisited ? 'node-visited' : isEnd ? 'node-end' : isStart ? 'node-start' : isWall ? 'node-wall' : ''
         return (
-            <div className={`node ${extraClass}`}>
+            <div className={`node ${extraClass}`} 
+            id = {`node-${row}-${col}`}
+            onMouseDown = {()=> onMouseDown(row,col)}
+            onMouseEnter = {()=> onMouseEnter(row,col)}
+            onMouseUp = {()=> onMouseUp()}
+            >
             </div>
         )
     }

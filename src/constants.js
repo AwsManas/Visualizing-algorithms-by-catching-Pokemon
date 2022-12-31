@@ -6,3 +6,4 @@ export const start_row = 8;
 export const start_col = 10;
 export const end_row = 15;
 export const end_col = 37;
+
