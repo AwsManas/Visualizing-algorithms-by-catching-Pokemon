@@ -41,6 +41,11 @@ export default class MyApp extends Component{
     const startNode = nodes[Constants.start_row][Constants.start_col];
     const finishNode = nodes[Constants.end_row][Constants.end_col];
     const visitedNodesInOrder = depth_first_search(nodes, startNode, finishNode);
+    visitedNodesInOrder.shift(); // Remove the starting element
+    const last_ele = visitedNodesInOrder.pop();
+    if(!(last_ele.col === Constants.end_col && last_ele.row === Constants.end_row)) {
+        visitedNodesInOrder.push(last_ele);
+    } 
     this.animate_dfs(visitedNodesInOrder);
     }
 
