@@ -5,6 +5,7 @@ import './css/MyApp.css'
 import * as Constants from './constants'
 
 import {depth_first_search} from './algorithms/dfs'
+import {breadth_first_search} from './algorithms/bfs'
 
 export default class MyApp extends Component{
 
@@ -49,6 +50,19 @@ export default class MyApp extends Component{
     this.animate_dfs(visitedNodesInOrder);
     }
 
+    visualize_bfs() {
+    const {nodes} = this.state;
+    const startNode = nodes[Constants.start_row][Constants.start_col];
+    const finishNode = nodes[Constants.end_row][Constants.end_col];
+    const visitedNodesInOrder = breadth_first_search(nodes, startNode, finishNode);
+    visitedNodesInOrder.shift(); // Remove the starting element
+    const last_ele = visitedNodesInOrder.pop();
+    if(!(last_ele.col === Constants.end_col && last_ele.row === Constants.end_row)) {
+        visitedNodesInOrder.push(last_ele);
+    } 
+    this.animate_dfs(visitedNodesInOrder); // Same BFS function will work as there is no new animation changes 
+    }
+
 
 
     handleMouseDown(row,col){
@@ -73,6 +87,7 @@ export default class MyApp extends Component{
         return (
             <div>
             <button onClick={ () => this.visualize_dfs()}>DFS</button>
+            <button onClick= { () => this.visualize_bfs()}>BFS</button>
             <div className="mygrid">
             {nodes.map((row, rowIdx) => {
               return (
