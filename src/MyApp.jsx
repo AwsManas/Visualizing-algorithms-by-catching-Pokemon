@@ -1,6 +1,7 @@
 import React , {Component} from "react";
 
 import Node from './SingleNode.js'
+import Mouse_Weight from './MouseWeight.js';
 import './css/MyApp.css'
 import * as Constants from './constants'
 
@@ -13,7 +14,8 @@ export default class MyApp extends Component{
     constructor(props){
         super(props)
         this.state = {
-            nodes : []
+            nodes : [],
+            mouse_weight : 1
         } 
     }
 
@@ -94,7 +96,7 @@ export default class MyApp extends Component{
     this.animate_shortest_path(visitedNodesInOrder,shortestPath);
     }
 
-    dijiktras(){
+    visualize_dijiktras(){
     const {nodes} = this.state;
     const startNode = nodes[Constants.start_row][Constants.start_col];
     const finishNode = nodes[Constants.end_row][Constants.end_col];
@@ -108,7 +110,7 @@ export default class MyApp extends Component{
     }
 
     handleMouseDown(row,col){
-        const newNodes = getNewNodesWithWallToggle(this.state.nodes,row,col)
+        const newNodes = getNewNodesWithWallToggle(this.state.nodes,row,col,this.state.mouse_weight)
         this.setState({nodes : newNodes , mousePressed : true});
     }
 
@@ -119,18 +121,33 @@ export default class MyApp extends Component{
     handleMouseEnter(row,col){
         if(this.state.mousePressed===false)
         return;
-        const newNodes = getNewNodesWithWallToggle(this.state.nodes,row,col)
+        const newNodes = getNewNodesWithWallToggle(this.state.nodes,row,col,this.state.mouse_weight)
         this.setState({nodes : newNodes});
     }
 
+    toggleMouseBehavious(){
+        let mouse_weight = this.state.mouse_weight;
+        mouse_weight = (mouse_weight + 1 )% (Constants.max_weight + 1) ;
+        mouse_weight = mouse_weight < 1 ? 1 : mouse_weight;
+        this.setState({mouse_weight : mouse_weight});
+    }
+
+    eraseWeightsMode(){
+        let mouse_weight = 0;
+        this.setState({mouse_weight : mouse_weight});
+    }
     render(){
 
         let nodes = this.state.nodes;
+        let mouse_weight = this.state.mouse_weight;
         return (
             <div>
             <button onClick={ () => this.visualize_dfs()}>DFS</button>
             <button onClick= { () => this.visualize_bfs()}>BFS</button>
-            <button onClick= { () => this.dijiktras()}>Dijiktras</button>
+            <button onClick= { () => this.visualize_dijiktras()}>Dijiktras</button>
+            <button onClick = {() => {this.toggleMouseBehavious()}}>Change Weights</button>
+            <button onClick = {() => {this.eraseWeightsMode()}}>Eraser</button>
+            <Mouse_Weight weight = {mouse_weight}></Mouse_Weight>
             <div className="mygrid">
             {nodes.map((row, rowIdx) => {
               return (
@@ -164,12 +181,13 @@ export default class MyApp extends Component{
 
 }
 
-const getNewNodesWithWallToggle = (nodes,row,col) => {
+const getNewNodesWithWallToggle = (nodes,row,col,weight) => {
     const newNodes = nodes.slice();
     const node = newNodes[row][col];
+    weight = weight === 1 ? Infinity : weight;
     const newNode = {
-        ...node,
-        isWall : !node.isWall
+            ...node,
+            isWall : weight
     }
     newNodes[row][col] = newNode;
     return newNodes;

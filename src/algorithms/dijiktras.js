@@ -9,7 +9,7 @@ function issafe(x,y,grid){
   if(x<0 || y<0 || x>=Constants.grid_height || y>= Constants.grid_width)
   return false;
 
-  if(grid[x][y].isWall)
+  if(grid[x][y].isWal===Infinity)
   return false;
 
   return true;

@@ -7,3 +7,4 @@ export const start_col = 10;
 export const end_row = 15;
 export const end_col = 37;
 
+export const max_weight = 7;
