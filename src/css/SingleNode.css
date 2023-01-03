@@ -18,6 +18,18 @@
     background-color: black;
 }
 
+
+.short-path{
+    animation-name: shortestAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out ;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
 .node-visited{
     animation-name: visitedAnimation;
     animation-duration: 1.5s;
@@ -29,6 +41,31 @@
     animation-play-state: running;
   }
   
+  @keyframes shortestAnimation {
+    
+    0% {
+        transform: scale(0.3);
+        background-color: rgba(0, 255, 68, 0.75);
+        border-radius: 100%;
+      }
+    
+      50% {
+        background-color: rgba(183, 255, 74, 0.75);
+      }
+    
+      75% {
+        transform: scale(1.2);
+        background-color: rgba(208, 208, 24, 0.75);
+      }
+    
+      100% {
+        transform: scale(1);
+        background-color: yellow;
+      }
+
+  }
+
+
   @keyframes visitedAnimation {
     0% {
       transform: scale(0.3);

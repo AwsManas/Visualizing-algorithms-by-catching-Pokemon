@@ -1,62 +1,93 @@
-export function dijkstra(grid, startNode, finishNode) {
-    const visitedNodesInOrder = [];
-    startNode.distance = 0;
-    const unvisitedNodes = getAllNodes(grid);
-    while (!!unvisitedNodes.length) {
-      sortNodesByDistance(unvisitedNodes);
-      const closestNode = unvisitedNodes.shift();
-      // If we encounter a wall, we skip it.
-      if (closestNode.isWall) continue;
-      // If the closest node is at a distance of infinity,
-      // we must be trapped and should therefore stop.
-      if (closestNode.distance === Infinity) return visitedNodesInOrder;
-      closestNode.isVisited = true;
-      visitedNodesInOrder.push(closestNode);
-      if (closestNode === finishNode) return visitedNodesInOrder;
-      updateUnvisitedNeighbors(closestNode, grid);
-    }
-  }
-  
-  function sortNodesByDistance(unvisitedNodes) {
-    unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
-  }
-  
-  function updateUnvisitedNeighbors(node, grid) {
-    const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
-    for (const neighbor of unvisitedNeighbors) {
-      neighbor.distance = node.distance + 1;
-      neighbor.previousNode = node;
-    }
-  }
-  
-  function getUnvisitedNeighbors(node, grid) {
-    const neighbors = [];
-    const {col, row} = node;
-    if (row > 0) neighbors.push(grid[row - 1][col]);
-    if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
-    if (col > 0) neighbors.push(grid[row][col - 1]);
-    if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-    return neighbors.filter(neighbor => !neighbor.isVisited);
-  }
-  
-  function getAllNodes(grid) {
-    const nodes = [];
-    for (const row of grid) {
-      for (const node of row) {
-        nodes.push(node);
+import * as Constants from '../constants'
+
+var visited_in_order = [];
+var shortestPath = []
+var n;
+var m;
+
+function issafe(x,y,grid){
+  if(x<0 || y<0 || x>=Constants.grid_height || y>= Constants.grid_width)
+  return false;
+
+  if(grid[x][y].isWall)
+  return false;
+
+  return true;
+}
+
+
+function minDist(dist,vis){
+  let minn = Infinity;
+  let row = -1, col = -1;
+  for(let i=0; i<n; i++){
+    for(let j=0; j<m; j++){
+      if(vis[i][j]===false && dist[i][j]<= minn){
+        minn = dist[i][j];
+        row = i;
+        col = j;
       }
     }
-    return nodes;
   }
-  
-  // Backtracks from the finishNode to find the shortest path.
-  // Only works when called *after* the dijkstra method above.
-  export function getNodesInShortestPathOrder(finishNode) {
-    const nodesInShortestPathOrder = [];
-    let currentNode = finishNode;
-    while (currentNode !== null) {
-      nodesInShortestPathOrder.unshift(currentNode);
-      currentNode = currentNode.previousNode;
+  let node = {
+    row : row,
+    col : col
+  };
+
+  return node;
+}
+
+export function dijiktras_path(grid, startNode, finishNode) {
+  visited_in_order = [];
+  shortestPath = []
+  n = grid.length;
+  m = grid[0].length;
+  var dist = new Array(n).fill(null).map(()=>new Array(m).fill(Infinity));
+  var parents = new Array(n).fill(null).map(()=>new Array(m).fill(-1));
+  var isSmallest = new Array(n).fill(null).map(()=>new Array(m).fill(false));
+  dist[startNode.row][startNode.col] = 0;
+  const delx = [1,0,-1,0];
+  const dely = [0,1,0,-1];
+
+  for(let ii=0; ii<n*m; ii++){
+    let u = minDist(dist,isSmallest);
+    if(u.row===-1 && u.col === -1) continue;
+    visited_in_order.push(u);
+    if(u.row===finishNode.row && u.col === finishNode.col) break;
+    isSmallest[u.row][u.col] = true;
+    let r = u.row,c = u.col;
+    for (let i=0; i<4; i++){
+      let temp_obj = {
+          row : r+delx[i],
+          col : c+dely[i]
+      };
+
+      if(issafe(r+delx[i],c+dely[i],grid) ){
+        let offset = isNaN(grid[r+delx[i]][c +dely[i]].weight) ? 1 : grid[r+delx[i]][c +dely[i]].weight;
+        if(isSmallest[r+delx[i]][c+dely[i]] === false && dist[r][c]!== Infinity && dist[r][c] + offset < dist[r+delx[i]][c+dely[i]]){
+          dist[r+delx[i]][c+dely[i]] = dist[r][c] + offset;
+          parents[r+delx[i]][c+dely[i]] = u;
+        }
     }
-    return nodesInShortestPathOrder;
+    }
+    
   }
+
+  const last_ele  = visited_in_order[visited_in_order.length-1];
+    if(last_ele.row === finishNode.row && last_ele.col === finishNode.col) {
+        // a sucessfull path exists 
+        var temp_node = JSON.parse(JSON.stringify(last_ele))
+        while(temp_node.col!== startNode.col || temp_node.row !== startNode.row){
+            shortestPath.push(temp_node);
+            temp_node = parents[temp_node.row][temp_node.col]
+        }
+        shortestPath.push(temp_node);
+    }
+    shortestPath.reverse();
+    console.log("Visited : ");
+    console.log(visited_in_order);
+    console.log("Shortest");
+    console.log(shortestPath);
+    return [visited_in_order , shortestPath];
+
+
+}

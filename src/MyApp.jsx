@@ -6,6 +6,7 @@ import * as Constants from './constants'
 
 import {depth_first_search} from './algorithms/dfs'
 import {breadth_first_search} from './algorithms/bfs'
+import {dijiktras_path} from './algorithms/dijiktras'
 
 export default class MyApp extends Component{
 
@@ -35,6 +36,36 @@ export default class MyApp extends Component{
             this.setState({nodes: newNodes});
             },10+delay);
         }
+
+    }
+
+    animate_shortest_path(visited_nodes,path){
+        let  delay = 20;
+        for(const node of visited_nodes){
+            delay +=50;
+            setTimeout(()=> {
+            const newNodes = this.state.nodes.slice();
+            const newNode = {
+                ...node,
+                visit : true
+            }
+            newNodes[node.row][node.col] = newNode;
+            this.setState({nodes: newNodes});
+            },10+delay);
+        }
+
+        for(const node of path){
+            delay+=50;
+            setTimeout(()=>{
+                const newNodes = this.state.nodes.slice();
+                const newNode = {
+                    ...node,
+                    shortestPath : true
+                }
+                newNodes[node.row][node.col] = newNode;
+                this.setState({nodes : newNodes});
+            },10+delay);
+        }
     }
 
     visualize_dfs() {
@@ -44,7 +75,7 @@ export default class MyApp extends Component{
     const visitedNodesInOrder = depth_first_search(nodes, startNode, finishNode);
     visitedNodesInOrder.shift(); // Remove the starting element
     const last_ele = visitedNodesInOrder.pop();
-    if(!(last_ele.col === Constants.end_col && last_ele.row === Constants.end_row)) {
+    if(!(last_ele.col === finishNode.col && last_ele.row === finishNode.row)){
         visitedNodesInOrder.push(last_ele);
     } 
     this.animate_dfs(visitedNodesInOrder);
@@ -54,16 +85,27 @@ export default class MyApp extends Component{
     const {nodes} = this.state;
     const startNode = nodes[Constants.start_row][Constants.start_col];
     const finishNode = nodes[Constants.end_row][Constants.end_col];
-    const visitedNodesInOrder = breadth_first_search(nodes, startNode, finishNode);
+    const [visitedNodesInOrder , shortestPath ]= breadth_first_search(nodes, startNode, finishNode);
     visitedNodesInOrder.shift(); // Remove the starting element
     const last_ele = visitedNodesInOrder.pop();
-    if(!(last_ele.col === Constants.end_col && last_ele.row === Constants.end_row)) {
+    if(!(last_ele.col === finishNode.col && last_ele.row === finishNode.row)) {
         visitedNodesInOrder.push(last_ele);
     } 
-    this.animate_dfs(visitedNodesInOrder); // Same BFS function will work as there is no new animation changes 
+    this.animate_shortest_path(visitedNodesInOrder,shortestPath);
     }
 
-
+    dijiktras(){
+    const {nodes} = this.state;
+    const startNode = nodes[Constants.start_row][Constants.start_col];
+    const finishNode = nodes[Constants.end_row][Constants.end_col];
+    const [visitedNodesInOrder, shortestPathInOrder] = dijiktras_path(nodes,startNode,finishNode);
+    const last_ele = visitedNodesInOrder.pop();
+    visitedNodesInOrder.shift();
+    if(!(last_ele.col === finishNode.col && last_ele.row === finishNode.row)) {
+        visitedNodesInOrder.push(last_ele);
+    } 
+    this.animate_shortest_path(visitedNodesInOrder,shortestPathInOrder);
+    }
 
     handleMouseDown(row,col){
         const newNodes = getNewNodesWithWallToggle(this.state.nodes,row,col)
@@ -88,12 +130,13 @@ export default class MyApp extends Component{
             <div>
             <button onClick={ () => this.visualize_dfs()}>DFS</button>
             <button onClick= { () => this.visualize_bfs()}>BFS</button>
+            <button onClick= { () => this.dijiktras()}>Dijiktras</button>
             <div className="mygrid">
             {nodes.map((row, rowIdx) => {
               return (
                 <div key={rowIdx}>
                   {row.map((node, nodeIdx) => {
-                    const {start,finish,visit,isWall,row,col} = node;
+                    const {start,finish,visit,isWall,row,col,shortestPath} = node;
                     return (
                       <Node 
                         key = {nodeIdx}
@@ -106,6 +149,7 @@ export default class MyApp extends Component{
                         onMouseUp={() => this.handleMouseUp()}
                         row = {row}
                         col = {col}
+                        isShort = {shortestPath}
                         >
                       </Node>
                     );
@@ -143,7 +187,8 @@ const initialNodes = () => {
                 start : row === Constants.start_row && col === Constants.start_col , 
                 finish : row === Constants.end_row && col === Constants.end_col,
                 visit : false,
-                isWall : false
+                isWall : false,
+                shortestPath : false
             };
 
             crow.push(thisNode);

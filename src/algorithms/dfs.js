@@ -1,5 +1,5 @@
 import * as Constants from '../constants'
-
+// might not return a shortest path 
 
 var visited_in_order = [];
 var glb_startNode = 0;
@@ -37,8 +37,8 @@ function dfs(r,c,grid){
         glb_completed = true;
         return;
     }
-    let delx = [-1,1,0,0];
-    let dely = [0,0,1,-1];
+    const delx = [1,0,-1,0];
+    const dely = [0,1,0,-1];
 
     for (let i=0; i<4; i++){
         let temp_obj = {
