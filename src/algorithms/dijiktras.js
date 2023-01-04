@@ -9,7 +9,7 @@ function issafe(x,y,grid){
   if(x<0 || y<0 || x>=Constants.grid_height || y>= Constants.grid_width)
   return false;
 
-  if(grid[x][y].isWal===Infinity)
+  if(grid[x][y].isWall===Infinity)
   return false;
 
   return true;
@@ -21,7 +21,7 @@ function minDist(dist,vis){
   let row = -1, col = -1;
   for(let i=0; i<n; i++){
     for(let j=0; j<m; j++){
-      if(vis[i][j]===false && dist[i][j]<= minn){
+      if(vis[i][j]===false && dist[i][j]< minn){
         minn = dist[i][j];
         row = i;
         col = j;
@@ -62,7 +62,9 @@ export function dijiktras_path(grid, startNode, finishNode) {
       };
 
       if(issafe(r+delx[i],c+dely[i],grid) ){
-        let offset = isNaN(grid[r+delx[i]][c +dely[i]].weight) ? 1 : grid[r+delx[i]][c +dely[i]].weight;
+        //let offset = isNaN(grid[r+delx[i]][c +dely[i]].weight) ? 1 : grid[r+delx[i]][c +dely[i]].weight;
+        let offset = grid[r+delx[i]][c +dely[i]].isWall;
+        offset = offset === 0 ? 1 : offset;
         if(isSmallest[r+delx[i]][c+dely[i]] === false && dist[r][c]!== Infinity && dist[r][c] + offset < dist[r+delx[i]][c+dely[i]]){
           dist[r+delx[i]][c+dely[i]] = dist[r][c] + offset;
           parents[r+delx[i]][c+dely[i]] = u;
@@ -73,7 +75,7 @@ export function dijiktras_path(grid, startNode, finishNode) {
   }
 
   const last_ele  = visited_in_order[visited_in_order.length-1];
-    if(last_ele.row === finishNode.row && last_ele.col === finishNode.col) {
+    if(last_ele.row === finishNode.row && last_ele.col === finishNode.col && dist[finishNode.row][finishNode.col]!= Infinity) {
         // a sucessfull path exists 
         var temp_node = JSON.parse(JSON.stringify(last_ele))
         while(temp_node.col!== startNode.col || temp_node.row !== startNode.row){
@@ -83,10 +85,6 @@ export function dijiktras_path(grid, startNode, finishNode) {
         shortestPath.push(temp_node);
     }
     shortestPath.reverse();
-    console.log("Visited : ");
-    console.log(visited_in_order);
-    console.log("Shortest");
-    console.log(shortestPath);
     return [visited_in_order , shortestPath];
 
 

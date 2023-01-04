@@ -6,11 +6,11 @@
 }
 
 .node-start{
-    background-color: greenyellow;
+    background-color: lightgreen;
 }
 
 .node-end{
-    background-color: red;
+    background-color: darkgreen;
 }
 
 
@@ -87,3 +87,30 @@
       background-color: rgba(0, 190, 218, 0.75);
     }
   }
+
+.node-wt-2{
+  background-color: rgb(242, 208, 207);
+}
+
+.node-wt-3{
+  background-color: rgb(234, 180, 179);
+}
+
+.node-wt-4{
+  background-color: rgb(228, 156, 155);
+}
+
+
+.node-wt-5{
+  background-color:rgb(207, 81, 79)
+}
+
+
+.node-wt-6{
+  background-color: rgb(184, 53, 50)
+}
+
+
+.node-wt-7{
+  background-color: rgb(108, 31, 30)
+}

@@ -8,6 +8,7 @@ import * as Constants from './constants'
 import {depth_first_search} from './algorithms/dfs'
 import {breadth_first_search} from './algorithms/bfs'
 import {dijiktras_path} from './algorithms/dijiktras'
+import { a_star } from "./algorithms/a_star.js";
 
 export default class MyApp extends Component{
 
@@ -109,6 +110,19 @@ export default class MyApp extends Component{
     this.animate_shortest_path(visitedNodesInOrder,shortestPathInOrder);
     }
 
+    visualize_a_star(){
+    const {nodes} = this.state;
+    const startNode = nodes[Constants.start_row][Constants.start_col];
+    const finishNode = nodes[Constants.end_row][Constants.end_col];
+    const [visitedNodesInOrder, shortestPathInOrder] = a_star(nodes,startNode,finishNode);
+    const last_ele = visitedNodesInOrder.pop();
+    visitedNodesInOrder.shift();
+    if(!(last_ele.col === finishNode.col && last_ele.row === finishNode.row)) {
+        visitedNodesInOrder.push(last_ele);
+    } 
+    this.animate_shortest_path(visitedNodesInOrder,shortestPathInOrder);
+    }
+
     handleMouseDown(row,col){
         const newNodes = getNewNodesWithWallToggle(this.state.nodes,row,col,this.state.mouse_weight)
         this.setState({nodes : newNodes , mousePressed : true});
@@ -145,6 +159,7 @@ export default class MyApp extends Component{
             <button onClick={ () => this.visualize_dfs()}>DFS</button>
             <button onClick= { () => this.visualize_bfs()}>BFS</button>
             <button onClick= { () => this.visualize_dijiktras()}>Dijiktras</button>
+            <button onClick= { () => this.visualize_a_star()}>A*</button>
             <button onClick = {() => {this.toggleMouseBehavious()}}>Change Weights</button>
             <button onClick = {() => {this.eraseWeightsMode()}}>Eraser</button>
             <Mouse_Weight weight = {mouse_weight}></Mouse_Weight>
@@ -205,7 +220,7 @@ const initialNodes = () => {
                 start : row === Constants.start_row && col === Constants.start_col , 
                 finish : row === Constants.end_row && col === Constants.end_col,
                 visit : false,
-                isWall : false,
+                isWall : 0,
                 shortestPath : false
             };
 
