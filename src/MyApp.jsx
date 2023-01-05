@@ -1,7 +1,7 @@
 import React , {Component} from "react";
 
 import Node from './SingleNode.js'
-import Mouse_Weight from './MouseWeight.js';
+//import Mouse_Weight from './MouseWeight.js';
 import Card from './Card.js';
 import Header from './Header';
 import Legend from "./Legend.js";
@@ -202,6 +202,8 @@ export default class MyApp extends Component{
             case 'a_Star':
                         this.visualize_a_star();
                     break;
+            default : console.log("Default case, shouldnt happen");
+                    break;
         }
     }
 
@@ -219,7 +221,7 @@ export default class MyApp extends Component{
     render(){
 
         let nodes = this.state.nodes;
-        let mouse_weight = this.state.mouse_weight;
+        //let mouse_weight = this.state.mouse_weight;
         return (
             <div id="top">
             <Header></Header>
@@ -399,7 +401,7 @@ const initialNodes = (density) => {
     for(let row = 0; row < Constants.grid_height; row++){
         let crow = []; 
         for(let col = 0; col < Constants.grid_width; col++) {
-            if(density=='empty') {
+            if(density==='empty') {
             let thisNode = {
                 row : row,
                 col : col,
@@ -411,7 +413,7 @@ const initialNodes = (density) => {
             };
             crow.push(thisNode);
         }
-        else if(density=='dense'){
+        else if(density==='dense'){
             let wall = 0;
             // 30% chance of a object getting placed 
             if(Math.random()*100 > Constants.dense_thresh){
@@ -429,7 +431,7 @@ const initialNodes = (density) => {
             };
             crow.push(thisNode);
         }
-        else if(density=='shallow'){
+        else if(density==='shallow'){
             let wall = 0;
             // 30% chance of a object getting placed 
             if(Math.random()*100 > Constants.shallow_thresh){

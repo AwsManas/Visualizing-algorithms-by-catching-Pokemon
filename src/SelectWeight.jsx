@@ -39,13 +39,15 @@ export default class SelectWeight extends Component {
             case 7:
                     runAlgo();
                     break;
+            default:
+                        console.log("Help");
+                        break;
         }
 
     }
 
     render(){
 
-        const { changeMouseMode , start} = this.props;
         const className_sel = `button_weight button__selected`
         const className_notsel = `button_weight button_not_selected`
         var button_class = []

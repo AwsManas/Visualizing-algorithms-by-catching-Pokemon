@@ -14,9 +14,9 @@ export default class Card extends Component {
         return (
             <div className="card">
                 <div className="card__body">
-                    <img src= {url} className = "card__img"/>
+                    <img src= {url} className = "card__img" alt={title}/>
                     <h2 className="card__title">{title}</h2>
-                    <p className="card__description">{description} {hypertext_.length > 0 && <a href = {hyperlink} target="_blank"  > {hypertext} </a>} </p>
+                    <p className="card__description">{description} {hypertext_.length > 0 && <a href = {hyperlink} target="_blank" rel="noreferrer" > {hypertext} </a>} </p>
                     <button className="card__button" onClick={()=> callback(algorithm)}>Select</button>
                 </div>
                 
