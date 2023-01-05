@@ -1,4 +1,21 @@
 .mygrid {
-    margin: 100px 0px 0px 100px;
-    position: relative;
+    margin: auto;
+    width : 90%;
   }
+
+.card_wrapper{
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(12rem, 16rem));
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.section-heading {
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  background-color: lightgray;
+  padding: 20px;
+}

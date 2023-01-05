@@ -35,8 +35,11 @@ export default class SingleNode extends Component{
            }
         }
 
+        let string_class = `node ${extraClass}`;
+    
+
         return (
-            <div className={`node ${extraClass}`} 
+            <div className={string_class} 
             id = {`node-${row}-${col}`}
             onMouseDown = {()=> onMouseDown(row,col)}
             onMouseEnter = {()=> onMouseEnter(row,col)}

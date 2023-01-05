@@ -1,9 +1,10 @@
 .node{
-    width: 15px;
-    height: 15px;
-    outline: 1px solid grey;
+    width: 25px;
+    height: 25px;
+    outline: 1px solid lightgray;
     display: inline-block;
 }
+
 
 .node-start{
     background-color: lightgreen;

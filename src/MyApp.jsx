@@ -2,6 +2,8 @@ import React , {Component} from "react";
 
 import Node from './SingleNode.js'
 import Mouse_Weight from './MouseWeight.js';
+import Card from './Card.js';
+import Header from './Header';
 import './css/MyApp.css'
 import * as Constants from './constants'
 
@@ -16,7 +18,8 @@ export default class MyApp extends Component{
         super(props)
         this.state = {
             nodes : [],
-            mouse_weight : 1
+            mouse_weight : 1,
+            algorithm : 'None'
         } 
     }
 
@@ -150,12 +153,76 @@ export default class MyApp extends Component{
         let mouse_weight = 0;
         this.setState({mouse_weight : mouse_weight});
     }
+
+
+    setAlgorithmType(ch){
+        this.setState({algorithm : ch});
+        const div = document.querySelector('#choose_map');
+        div.scrollIntoView({ behavior: 'smooth' });
+
+    }
     render(){
 
         let nodes = this.state.nodes;
         let mouse_weight = this.state.mouse_weight;
         return (
             <div>
+            <Header></Header>
+            <br />
+            <div className="section-heading">Choose the Ball (traversing algorithm) you want to visualize</div>
+            <div className="card_wrapper">
+            <Card 
+            url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9sJmuEuOG686oVIqaxsLDjwa0qs_cNB5xnw&usqp=CAU'
+            title = 'Poke Ball'
+            description = 'It uses DFS technique for traversal. It does not Guarantee the shortest path and deosnt work for weighted edges.'
+            algorithm = 'DFS'
+            callback = {(ch) => this.setAlgorithmType(ch) }
+            hypertext = 'Link'
+            hyperlink = 'https://en.wikipedia.org/wiki/Depth-first_search'
+            ></Card>
+            <Card 
+            url = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/016cd9a5-7bee-44c1-b903-9a4867cfd9ea/d86ar2c-a7240aef-1530-41d5-9965-a9355c888a2f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzAxNmNkOWE1LTdiZWUtNDRjMS1iOTAzLTlhNDg2N2NmZDllYVwvZDg2YXIyYy1hNzI0MGFlZi0xNTMwLTQxZDUtOTk2NS1hOTM1NWM4ODhhMmYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.40NfNjKM6aL2B5uPDrsL5c9_o-WjD1q0PLkARAM0Wm0'
+            title = 'Great Ball'
+            description = 'It uses BFS technique for traversal. It reaches the target in the shortest path however works correctly only for unweighted graph.'
+            algorithm = 'BFS'
+            callback = {(ch) => this.setAlgorithmType(ch) }
+            hypertext = 'Link'
+            hyperlink = 'https://en.wikipedia.org/wiki/Breadth-first_search'
+            ></Card>
+            <Card 
+            url = 'https://www.pngitem.com/pimgs/m/246-2466153_transparent-ultraball-png-ultra-ball-png-hd-png.png'
+            title = "Ultra Ball"
+            description = "It uses the famous gready Dijkstra's algorithm to find the shortest path. It can even find the shortest path for weighted componenets."
+            algorithm = 'Dijiktras'
+            callback = {(ch) => this.setAlgorithmType(ch) }
+            hypertext = 'Link'
+            hyperlink = 'https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm'
+            ></Card>
+            <Card 
+            url = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/c861d306-8f42-4864-ab2e-61a271518c8a/df5v8as-456a4efd-1d86-4e1b-a9ff-0f85538d8625.png/v1/fill/w_1280,h_1281,strp/master_ball__pokemon_pinball__by_ace_zeroartic_df5v8as-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MSIsInBhdGgiOiJcL2ZcL2M4NjFkMzA2LThmNDItNDg2NC1hYjJlLTYxYTI3MTUxOGM4YVwvZGY1djhhcy00NTZhNGVmZC0xZDg2LTRlMWItYTlmZi0wZjg1NTM4ZDg2MjUucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.4ReIMhNfZXOSG2g_LsoY3DQGUsRkeuziEkC4PvfF9QI'
+             title = "Master Ball"
+            description = 'Master Ball uses A* search algorithm that guarntees to find the shortest path in least amount of time in comparision to other algorithms.'
+            algorithm = 'a_Star'
+            callback = {(ch) => this.setAlgorithmType(ch) }
+            hypertext = 'Link'
+            hyperlink = 'https://en.wikipedia.org/wiki/A*_search_algorithm'
+            ></Card>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br id = "choose_map"/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div className="section-heading">Choose the map template</div>
+            <br/>
             <button onClick={ () => this.visualize_dfs()}>DFS</button>
             <button onClick= { () => this.visualize_bfs()}>BFS</button>
             <button onClick= { () => this.visualize_dijiktras()}>Dijiktras</button>

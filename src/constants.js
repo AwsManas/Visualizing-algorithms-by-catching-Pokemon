@@ -1,5 +1,5 @@
-export const grid_width = 60;
-export const grid_height = 30;
+export const grid_width = 50;
+export const grid_height = 25;
 export const Blocked = 1;
 
 export const start_row = 8;
