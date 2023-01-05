@@ -27,15 +27,17 @@ export default class MyApp extends Component{
                 { value: 'startloc', label: 'Starting Point (Ball)', color: 'lightgreen' },
                 { value: 'visited', label: 'Visited Nodes', color: '#00beda' },
                 { value: 'shortest_path', label: 'Shortest path', color: 'yellow' },
+                { value: 'weights', label: 'Weighted path', color: 'red' },
                 { value: 'wall', label: 'Wall', color: 'black' },
                 { value: 'destination', label: 'Destination (Pokemon)', color: 'darkgreen' },
-              ]
+              ],
+            visualizeStarted : false
         } 
     }
 
     componentDidMount() {
-        const nodes = initialNodes();
-        this.setState({nodes});
+        const [nodes , start_row, start_col , end_row , end_col ] = initialNodes('empty');
+        this.setState({nodes, start_row, start_col , end_row , end_col});
         const div = document.querySelector('#top');
         div.scrollIntoView({ behavior: 'smooth' });
     }
@@ -43,7 +45,7 @@ export default class MyApp extends Component{
     animate_dfs(visited_nodes){
         let  delay = 20;
         for(const node of visited_nodes){
-            delay +=50;
+            delay +=20;
             setTimeout(()=> {
             const newNodes = this.state.nodes.slice();
             const newNode = {
@@ -60,7 +62,7 @@ export default class MyApp extends Component{
     animate_shortest_path(visited_nodes,path){
         let  delay = 20;
         for(const node of visited_nodes){
-            delay +=50;
+            delay +=20;
             setTimeout(()=> {
             const newNodes = this.state.nodes.slice();
             const newNode = {
@@ -73,7 +75,7 @@ export default class MyApp extends Component{
         }
 
         for(const node of path){
-            delay+=50;
+            delay+=20;
             setTimeout(()=>{
                 const newNodes = this.state.nodes.slice();
                 const newNode = {
@@ -88,8 +90,8 @@ export default class MyApp extends Component{
 
     visualize_dfs() {
     const {nodes} = this.state;
-    const startNode = nodes[Constants.start_row][Constants.start_col];
-    const finishNode = nodes[Constants.end_row][Constants.end_col];
+    const startNode = nodes[this.state.start_row][this.state.start_col];
+    const finishNode = nodes[this.state.end_row][this.state.end_col];
     const visitedNodesInOrder = depth_first_search(nodes, startNode, finishNode);
     visitedNodesInOrder.shift(); // Remove the starting element
     const last_ele = visitedNodesInOrder.pop();
@@ -101,8 +103,8 @@ export default class MyApp extends Component{
 
     visualize_bfs() {
     const {nodes} = this.state;
-    const startNode = nodes[Constants.start_row][Constants.start_col];
-    const finishNode = nodes[Constants.end_row][Constants.end_col];
+    const startNode = nodes[this.state.start_row][this.state.start_col];
+    const finishNode = nodes[this.state.end_row][this.state.end_col];
     const [visitedNodesInOrder , shortestPath ]= breadth_first_search(nodes, startNode, finishNode);
     visitedNodesInOrder.shift(); // Remove the starting element
     const last_ele = visitedNodesInOrder.pop();
@@ -114,8 +116,8 @@ export default class MyApp extends Component{
 
     visualize_dijiktras(){
     const {nodes} = this.state;
-    const startNode = nodes[Constants.start_row][Constants.start_col];
-    const finishNode = nodes[Constants.end_row][Constants.end_col];
+    const startNode = nodes[this.state.start_row][this.state.start_col];
+    const finishNode = nodes[this.state.end_row][this.state.end_col];
     const [visitedNodesInOrder, shortestPathInOrder] = dijiktras_path(nodes,startNode,finishNode);
     const last_ele = visitedNodesInOrder.pop();
     visitedNodesInOrder.shift();
@@ -127,8 +129,8 @@ export default class MyApp extends Component{
 
     visualize_a_star(){
     const {nodes} = this.state;
-    const startNode = nodes[Constants.start_row][Constants.start_col];
-    const finishNode = nodes[Constants.end_row][Constants.end_col];
+    const startNode = nodes[this.state.start_row][this.state.start_col];
+    const finishNode = nodes[this.state.end_row][this.state.end_col];
     const [visitedNodesInOrder, shortestPathInOrder] = a_star(nodes,startNode,finishNode);
     const last_ele = visitedNodesInOrder.pop();
     visitedNodesInOrder.shift();
@@ -139,6 +141,8 @@ export default class MyApp extends Component{
     }
 
     handleMouseDown(row,col){
+        if(this.state.visualizeStarted===true)
+        return;
         const newNodes = getNewNodesWithWallToggle(this.state.nodes,row,col,this.state.mouse_weight)
         this.setState({nodes : newNodes , mousePressed : true});
     }
@@ -149,6 +153,8 @@ export default class MyApp extends Component{
 
     handleMouseEnter(row,col){
         if(this.state.mousePressed===false)
+        return;
+        if(this.state.visualizeStarted===true)
         return;
         const newNodes = getNewNodesWithWallToggle(this.state.nodes,row,col,this.state.mouse_weight)
         this.setState({nodes : newNodes});
@@ -178,12 +184,37 @@ export default class MyApp extends Component{
 
     }
 
+    runTraversalAlgo(){
+        this.setState({visualizeStarted : true});
+        const div = document.querySelector('#last');
+        div.scrollIntoView({ behavior: 'smooth' });
+        const algo_ = this.state.algorithm;
+        switch(algo_){
+            case 'DFS':
+                        this.visualize_dfs();
+                        break;
+            case 'BFS':
+                        this.visualize_bfs();
+                        break;
+            case 'Dijiktras':
+                        this.visualize_dijiktras();
+                        break;
+            case 'a_Star':
+                        this.visualize_a_star();
+                    break;
+        }
+    }
+
     setMapType(ch){
         this.setState({map_type : ch});
+        const [nodes , start_row, start_col , end_row , end_col ] = initialNodes(ch);
+        this.setState({nodes, start_row, start_col , end_row , end_col});
         const div = document.querySelector('#edit_and_play');
         div.scrollIntoView({ behavior: 'smooth' });
 
-        // TODO create new nodes acordingly and set them in state 
+        
+
+        
     }
     render(){
 
@@ -193,7 +224,7 @@ export default class MyApp extends Component{
             <div id="top">
             <Header></Header>
             <br />
-            <div className="section-heading">Choose the Ball (traversing algorithm) you want to visualize</div>
+            <div className="section-heading">Choose the Ball (traversing algorithm) you want to visualise</div>
             <div className="card_wrapper">
             <Card 
             url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Pokebola-pokeball-png-0.png/800px-Pokebola-pokeball-png-0.png'
@@ -216,7 +247,7 @@ export default class MyApp extends Component{
             <Card 
             url = 'https://www.pngitem.com/pimgs/m/246-2466153_transparent-ultraball-png-ultra-ball-png-hd-png.png'
             title = "Ultra Ball"
-            description = "It uses the famous gready Dijkstra's algorithm to find the shortest path. It can even find the shortest path for weighted componenets."
+            description = "It uses the famous gready Dijkstra's algorithm to find the shortest path. It can even find the shortest path for weighted components."
             algorithm = 'Dijiktras'
             callback = {(ch) => this.setAlgorithmType(ch) }
             hypertext = 'Link'
@@ -285,17 +316,10 @@ export default class MyApp extends Component{
             <br/>
             <br/>
             <br/>
-            <br/>
-            <br/>
-            <br/>
             <br id ="edit_and_play"/>
             <br/>
             <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
+            <div className="section-heading">You can edit the map below by selecting the wall/weights below and  hovering over the  grid. Press Visulise when Ready!</div>  
             {/* <button onClick={ () => this.visualize_dfs()}>DFS</button>
             <button onClick= { () => this.visualize_bfs()}>BFS</button>
             <button onClick= { () => this.visualize_dijiktras()}>Dijiktras</button>
@@ -305,10 +329,17 @@ export default class MyApp extends Component{
              ></Legend>
             <SelectWeight
             changeMouseMode = { (mode) => this.toggleMouseBehavious_(mode) }
+            runAlgo = { () => this.runTraversalAlgo() }
             ></SelectWeight>
             {/* <button onClick = {() => {this.toggleMouseBehavious()}}>Change Weights</button>
             <button onClick = {() => {this.eraseWeightsMode()}}>Eraser</button>
             <Mouse_Weight weight = {mouse_weight}></Mouse_Weight> */}
+            <br/>
+            {this.state.algorithm === 'DFS' && <div className="section-message">The selected algorithm DFS doesnt guarantee the shortest path and ignores the weights of the edges. </div> }
+            {this.state.algorithm === 'BFS' && <div className="section-message">The selected algorithm BFS ignores the weights of the edges.</div> }
+            {this.state.algorithm === 'Dijiktras' && <div className="section-message">The traversal algorithm selected is Dijiktras</div> }
+            {this.state.algorithm === 'a_Star' && <div className="section-message">The traversal algorithm selected is A*</div> }
+            <br/>
             <div className="mygrid">
             {nodes.map((row, rowIdx) => {
               return (
@@ -336,6 +367,10 @@ export default class MyApp extends Component{
               );
             })}
           </div>
+          <br/>
+            <br/>
+            <br/>
+            <div className="section-heading" id ="last">Try a different algorithm . Click <a href="">here</a> to reset the grid.</div>
           </div>
         )
     }
@@ -354,28 +389,72 @@ const getNewNodesWithWallToggle = (nodes,row,col,weight) => {
     return newNodes;
 };
 
-const initialNodes = () => {
+const initialNodes = (density) => {
     let nodes = []
+    let start_row,start_col,end_row,end_col;
+    start_row = 1 + Math.floor(Math.random() * (Constants.grid_height  - 2));
+    end_row = 1 + Math.floor(Math.random() * (Constants.grid_height  - 2));
+    start_col = 1 + Math.floor(Math.random() * (Constants.grid_width)/2);
+    end_col =  Math.floor(Constants.grid_width/2) + Math.floor(Math.random() * (Constants.grid_width)/2);
     for(let row = 0; row < Constants.grid_height; row++){
         let crow = []; 
         for(let col = 0; col < Constants.grid_width; col++) {
-            
+            if(density=='empty') {
             let thisNode = {
                 row : row,
                 col : col,
-                start : row === Constants.start_row && col === Constants.start_col , 
-                finish : row === Constants.end_row && col === Constants.end_col,
+                start : row === start_row && col === start_col , 
+                finish : row === end_row && col === end_col,
                 visit : false,
                 isWall : 0,
                 shortestPath : false
             };
-
             crow.push(thisNode);
+        }
+        else if(density=='dense'){
+            let wall = 0;
+            // 30% chance of a object getting placed 
+            if(Math.random()*100 > Constants.dense_thresh){
+                wall = 1 + Math.floor(Math.random() * (6));
+                wall = wall === 1 ? Infinity : wall;
+            }
+            let thisNode = {
+                row : row,
+                col : col,
+                start : row === start_row && col === start_col , 
+                finish : row === end_row && col === end_col,
+                visit : false,
+                isWall : wall,
+                shortestPath : false
+            };
+            crow.push(thisNode);
+        }
+        else if(density=='shallow'){
+            let wall = 0;
+            // 30% chance of a object getting placed 
+            if(Math.random()*100 > Constants.shallow_thresh){
+                wall = 1 + Math.floor(Math.random() * (6));
+                wall = wall === 1 ? Infinity : wall;
+            }
+            let thisNode = {
+                row : row,
+                col : col,
+                start : row === start_row && col === start_col , 
+                finish : row === end_row && col === end_col,
+                visit : false,
+                isWall : wall,
+                shortestPath : false
+            };
+            crow.push(thisNode);
+        }
+
+            
 
         } 
         nodes.push(crow);
     }
-    return nodes;
+    return [nodes , start_row , start_col, end_row, end_col];
+
 };
 
 window.onbeforeunload = function () {

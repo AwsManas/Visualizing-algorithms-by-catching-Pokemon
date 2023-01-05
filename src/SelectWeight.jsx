@@ -11,7 +11,7 @@ export default class SelectWeight extends Component {
 
     buttonClick(button_id){
         this.setState({onButton : button_id});
-        const {changeMouseMode} = this.props;
+        const {changeMouseMode, runAlgo} = this.props;
         switch(button_id){
             case 0: 
                     // Wall
@@ -37,7 +37,7 @@ export default class SelectWeight extends Component {
                     changeMouseMode(0);
                     break;
             case 7:
-                    
+                    runAlgo();
                     break;
         }
 

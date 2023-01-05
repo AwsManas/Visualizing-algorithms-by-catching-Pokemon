@@ -1,5 +1,5 @@
 import React , {Component} from "react";
-
+// This was used for Debugging , no need for it anymore 
 export default class MouseWeight extends Component{
 
     constructor(props){

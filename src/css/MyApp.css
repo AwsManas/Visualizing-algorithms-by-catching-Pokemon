@@ -1,6 +1,10 @@
 .mygrid {
-    margin: auto;
-    width : 90%;
+  margin: auto;
+  width: 90%;
+  padding: 10px;
+  align-items: center;
+  position: relative;
+  left : 50px;
   }
 
 .card_wrapper{
@@ -17,5 +21,14 @@
   color: black;
   text-align: center;
   background-color: lightgray;
+  padding: 20px;
+}
+
+.section-message{
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  background-color: lightyellow;
   padding: 20px;
 }
