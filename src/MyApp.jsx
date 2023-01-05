@@ -227,13 +227,23 @@ export default class MyApp extends Component{
             <br/>
             <div className="card_wrapper">
             <Card
-                url = './media/dense.png'
+                url = 'https://github.com/AwsManas/Visualizing-algorithms-by-catching-Pokemon/blob/master/src/media/dense.png?raw=true'
                 title = 'Dense Map'
-                description = 'Randomly generate a dense map with lots of walls and weights.'
+                description = 'Randomly generate a dense map with lots of walls and weights'
             >   
             </Card>
-            <Card></Card>
-            <Card></Card>
+            <Card
+                url = 'https://github.com/AwsManas/Visualizing-algorithms-by-catching-Pokemon/blob/master/src/media/empty.png?raw=true'
+                title = 'Empty Map'
+                description = 'Show your creativity and draw your own map that suits your style'
+            >   
+            </Card>
+            <Card
+                url = 'https://github.com/AwsManas/Visualizing-algorithms-by-catching-Pokemon/blob/master/src/media/shallow.png?raw=true'
+                title = 'Shallow Map'
+                description = 'Randomly generate a shallow map with less number of wall and weights'
+            >   
+            </Card>
             </div>
             <button onClick={ () => this.visualize_dfs()}>DFS</button>
             <button onClick= { () => this.visualize_bfs()}>BFS</button>
