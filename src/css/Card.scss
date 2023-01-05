@@ -23,7 +23,6 @@ box-shadow: 0 2px 20px lightgray;
 border-radius: 0.2rem;
 flex-direction: column;
 justify-content: space-between;
-cursor: pointer;
 transition: transform 200ms ease-in;
 
 &__img{
@@ -53,6 +52,7 @@ transition: transform 200ms ease-in;
     border-radius: 0.2rem;
     position: relative;
     bottom: 1px;
+    cursor: pointer;
 }
 &:hover {
     transform: scale(1.02);

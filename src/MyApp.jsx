@@ -26,6 +26,8 @@ export default class MyApp extends Component{
     componentDidMount() {
         const nodes = initialNodes();
         this.setState({nodes});
+        const div = document.querySelector('#top');
+        div.scrollIntoView({ behavior: 'smooth' });
     }
 
     animate_dfs(visited_nodes){
@@ -166,7 +168,7 @@ export default class MyApp extends Component{
         let nodes = this.state.nodes;
         let mouse_weight = this.state.mouse_weight;
         return (
-            <div>
+            <div id="top">
             <Header></Header>
             <br />
             <div className="section-heading">Choose the Ball (traversing algorithm) you want to visualize</div>
@@ -223,6 +225,16 @@ export default class MyApp extends Component{
             <br/>
             <div className="section-heading">Choose the map template</div>
             <br/>
+            <div className="card_wrapper">
+            <Card
+                url = 'https://global-uploads.webflow.com/5d0dc87aac109e1ffdbe379c/60dca058d0085b02618c5b25_7BXlgcYV8AUSNnSA4m9FCqm7WvBF4my9ujqB8ia1PdUSOlNIOvZ2mogq9znrtNjaMd_l6f0e00uHXGmY6W-sEQ_izQMCIPRU0ZSOkOhm2FtMwXKuQu_3A5VU2z6USQ.png'
+                title = 'Dense Map'
+                description = 'Randomly generate a dense map with lots of walls and weights.'
+            >   
+            </Card>
+            <Card></Card>
+            <Card></Card>
+            </div>
             <button onClick={ () => this.visualize_dfs()}>DFS</button>
             <button onClick= { () => this.visualize_bfs()}>BFS</button>
             <button onClick= { () => this.visualize_dijiktras()}>Dijiktras</button>
@@ -298,3 +310,8 @@ const initialNodes = () => {
     }
     return nodes;
 };
+
+window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+  }
+  
