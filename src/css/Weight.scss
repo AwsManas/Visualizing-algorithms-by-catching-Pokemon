@@ -1,0 +1,59 @@
+.wrapper_weight{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(30px, 100px));
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 50px;
+  } 
+
+.button_weight{
+    overflow: hidden;
+    box-shadow: 0 2px 20px lightcoral;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+    border : 1px solid red;
+    position: relative;
+    bottom: 20px;
+    cursor: pointer;
+    &:hover {
+        transform: scale(1.02);
+        background: lightsalmon;
+        color: white;
+      }
+    
+}
+
+.button_not_selected{
+    color: black;
+    background: white;
+}
+
+.button__selected{
+    background: lightsalmon;
+    color: white;
+}
+
+.visuallize{
+    overflow: hidden;
+    box-shadow: 0 2px 20px yellowgreen;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+    border : 2px solid green;
+    position: relative;
+    bottom: 20px;
+    left: 20px;
+    cursor: pointer;
+    &:hover {
+        transform: scale(1.02);
+        background: yellowgreen;
+        color: white;
+      }
+      color: black;
+    background: white;
+}

@@ -4,7 +4,9 @@ import Node from './SingleNode.js'
 import Mouse_Weight from './MouseWeight.js';
 import Card from './Card.js';
 import Header from './Header';
-import './css/MyApp.css'
+import Legend from "./Legend.js";
+import './css/MyApp.css';
+import SelectWeight from "./SelectWeight.jsx";
 import * as Constants from './constants'
 
 import {depth_first_search} from './algorithms/dfs'
@@ -19,7 +21,15 @@ export default class MyApp extends Component{
         this.state = {
             nodes : [],
             mouse_weight : 1,
-            algorithm : 'None'
+            algorithm : 'None',
+            map_type : 'empty',
+            LegendData : [
+                { value: 'startloc', label: 'Starting Point (Ball)', color: 'lightgreen' },
+                { value: 'visited', label: 'Visited Nodes', color: '#00beda' },
+                { value: 'shortest_path', label: 'Shortest path', color: 'yellow' },
+                { value: 'wall', label: 'Wall', color: 'black' },
+                { value: 'destination', label: 'Destination (Pokemon)', color: 'darkgreen' },
+              ]
         } 
     }
 
@@ -151,6 +161,10 @@ export default class MyApp extends Component{
         this.setState({mouse_weight : mouse_weight});
     }
 
+    toggleMouseBehavious_(mode){
+        this.setState({mouse_weight : mode});
+    }
+
     eraseWeightsMode(){
         let mouse_weight = 0;
         this.setState({mouse_weight : mouse_weight});
@@ -163,6 +177,14 @@ export default class MyApp extends Component{
         div.scrollIntoView({ behavior: 'smooth' });
 
     }
+
+    setMapType(ch){
+        this.setState({map_type : ch});
+        const div = document.querySelector('#edit_and_play');
+        div.scrollIntoView({ behavior: 'smooth' });
+
+        // TODO create new nodes acordingly and set them in state 
+    }
     render(){
 
         let nodes = this.state.nodes;
@@ -174,7 +196,7 @@ export default class MyApp extends Component{
             <div className="section-heading">Choose the Ball (traversing algorithm) you want to visualize</div>
             <div className="card_wrapper">
             <Card 
-            url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9sJmuEuOG686oVIqaxsLDjwa0qs_cNB5xnw&usqp=CAU'
+            url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Pokebola-pokeball-png-0.png/800px-Pokebola-pokeball-png-0.png'
             title = 'Poke Ball'
             description = 'It uses DFS technique for traversal. It does not Guarantee the shortest path and deosnt work for weighted edges.'
             algorithm = 'DFS'
@@ -229,29 +251,64 @@ export default class MyApp extends Component{
             <Card
                 url = 'https://github.com/AwsManas/Visualizing-algorithms-by-catching-Pokemon/blob/master/src/media/dense.png?raw=true'
                 title = 'Dense Map'
-                description = 'Randomly generate a dense map with lots of walls and weights'
+                description = 'Randomly generate a dense map with lots of walls and weights.'
+                algorithm = 'dense'
+                callback = {(ch) => this.setMapType(ch) }
             >   
             </Card>
             <Card
                 url = 'https://github.com/AwsManas/Visualizing-algorithms-by-catching-Pokemon/blob/master/src/media/empty.png?raw=true'
                 title = 'Empty Map'
-                description = 'Show your creativity and draw your own map that suits your style'
+                description = 'Show your creativity and draw your own map that suits your style.'
+                algorithm = 'empty'
+                callback = {(ch) => this.setMapType(ch) }
             >   
             </Card>
             <Card
                 url = 'https://github.com/AwsManas/Visualizing-algorithms-by-catching-Pokemon/blob/master/src/media/shallow.png?raw=true'
                 title = 'Shallow Map'
-                description = 'Randomly generate a shallow map with less number of wall and weights'
+                description = 'Randomly generate a shallow map with less number of wall and weights.'
+                algorithm = 'shallow'
+                callback = {(ch) => this.setMapType(ch) }
             >   
             </Card>
             </div>
-            <button onClick={ () => this.visualize_dfs()}>DFS</button>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br id ="edit_and_play"/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            {/* <button onClick={ () => this.visualize_dfs()}>DFS</button>
             <button onClick= { () => this.visualize_bfs()}>BFS</button>
             <button onClick= { () => this.visualize_dijiktras()}>Dijiktras</button>
-            <button onClick= { () => this.visualize_a_star()}>A*</button>
-            <button onClick = {() => {this.toggleMouseBehavious()}}>Change Weights</button>
+            <button onClick= { () => this.visualize_a_star()}>A*</button> */}
+            <Legend 
+            data = {this.state.LegendData}
+             ></Legend>
+            <SelectWeight
+            changeMouseMode = { (mode) => this.toggleMouseBehavious_(mode) }
+            ></SelectWeight>
+            {/* <button onClick = {() => {this.toggleMouseBehavious()}}>Change Weights</button>
             <button onClick = {() => {this.eraseWeightsMode()}}>Eraser</button>
-            <Mouse_Weight weight = {mouse_weight}></Mouse_Weight>
+            <Mouse_Weight weight = {mouse_weight}></Mouse_Weight> */}
             <div className="mygrid">
             {nodes.map((row, rowIdx) => {
               return (
