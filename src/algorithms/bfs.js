@@ -1,4 +1,4 @@
-import * as Constants from '../constants'
+import * as Constants from '../components/constants'
 
 var visited_in_order = [];
 var glb_startNode = 0;

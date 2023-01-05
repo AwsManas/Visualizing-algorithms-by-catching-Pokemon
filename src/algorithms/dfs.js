@@ -1,4 +1,4 @@
-import * as Constants from '../constants'
+import * as Constants from '../components/constants'
 // might not return a shortest path 
 
 var visited_in_order = [];

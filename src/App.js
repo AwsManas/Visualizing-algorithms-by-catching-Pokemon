@@ -1,6 +1,5 @@
-import './App.css';
-import MyApp from './MyApp.jsx'
-
+import MyApp from './components/MyApp.jsx'
+import './css/App.css'
 function App() {
   return (
     <MyApp></MyApp>

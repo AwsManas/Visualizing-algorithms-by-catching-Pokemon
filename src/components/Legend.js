@@ -1,4 +1,4 @@
-import './css/Legend.css';
+import '../css/Legend.css';
 import React , {Component} from "react";
 export default class Legend extends Component{
     constructor(props){

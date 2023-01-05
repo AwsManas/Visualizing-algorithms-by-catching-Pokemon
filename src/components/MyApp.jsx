@@ -5,14 +5,14 @@ import Node from './SingleNode.js'
 import Card from './Card.js';
 import Header from './Header';
 import Legend from "./Legend.js";
-import './css/MyApp.css';
+import '../css/MyApp.css';
 import SelectWeight from "./SelectWeight.jsx";
 import * as Constants from './constants'
 
-import {depth_first_search} from './algorithms/dfs'
-import {breadth_first_search} from './algorithms/bfs'
-import {dijiktras_path} from './algorithms/dijiktras'
-import { a_star } from "./algorithms/a_star.js";
+import {depth_first_search} from '../algorithms/dfs'
+import {breadth_first_search} from '../algorithms/bfs'
+import {dijiktras_path} from '../algorithms/dijiktras'
+import { a_star } from "../algorithms/a_star.js";
 
 export default class MyApp extends Component{
 

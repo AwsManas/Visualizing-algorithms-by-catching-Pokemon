@@ -1,5 +1,5 @@
 import React , {Component} from "react";
-import './css/Weight.scss'
+import '../css/Weight.scss'
 export default class SelectWeight extends Component {
     constructor(props){
         super(props)

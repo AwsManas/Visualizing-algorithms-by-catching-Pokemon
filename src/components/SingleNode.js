@@ -1,5 +1,5 @@
 import React , {Component} from "react";
-import './css/SingleNode.css'
+import '../css/SingleNode.css'
 
 export default class SingleNode extends Component{
 
