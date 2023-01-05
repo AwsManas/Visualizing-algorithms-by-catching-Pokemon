@@ -227,7 +227,7 @@ export default class MyApp extends Component{
             <br/>
             <div className="card_wrapper">
             <Card
-                url = 'https://global-uploads.webflow.com/5d0dc87aac109e1ffdbe379c/60dca058d0085b02618c5b25_7BXlgcYV8AUSNnSA4m9FCqm7WvBF4my9ujqB8ia1PdUSOlNIOvZ2mogq9znrtNjaMd_l6f0e00uHXGmY6W-sEQ_izQMCIPRU0ZSOkOhm2FtMwXKuQu_3A5VU2z6USQ.png'
+                url = './media/dense.png'
                 title = 'Dense Map'
                 description = 'Randomly generate a dense map with lots of walls and weights.'
             >   
