@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Visualizing-algorithms-by-catching-Pokemon/static/css/main.a1a27449.css",
+    "main.js": "/Visualizing-algorithms-by-catching-Pokemon/static/js/main.23e692ff.js",
+    "static/js/787.7f320c1d.chunk.js": "/Visualizing-algorithms-by-catching-Pokemon/static/js/787.7f320c1d.chunk.js",
+    "index.html": "/Visualizing-algorithms-by-catching-Pokemon/index.html",
+    "main.a1a27449.css.map": "/Visualizing-algorithms-by-catching-Pokemon/static/css/main.a1a27449.css.map",
+    "main.23e692ff.js.map": "/Visualizing-algorithms-by-catching-Pokemon/static/js/main.23e692ff.js.map",
+    "787.7f320c1d.chunk.js.map": "/Visualizing-algorithms-by-catching-Pokemon/static/js/787.7f320c1d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a1a27449.css",
+    "static/js/main.23e692ff.js"
+  ]
+}
