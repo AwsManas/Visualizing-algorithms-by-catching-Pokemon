@@ -247,7 +247,7 @@ export default class MyApp extends Component{
             hyperlink = 'https://en.wikipedia.org/wiki/Breadth-first_search'
             ></Card>
             <Card 
-            url = 'https://www.pngitem.com/pimgs/m/246-2466153_transparent-ultraball-png-ultra-ball-png-hd-png.png'
+            url = 'https://www.clipartmax.com/png/middle/231-2317088_png-download-clipart-print-ultra-ball-pokemon-png.png'
             title = "Ultra Ball"
             description = "It uses the famous gready Dijkstra's algorithm to find the shortest path. It can even find the shortest path for weighted components."
             algorithm = 'Dijiktras'
